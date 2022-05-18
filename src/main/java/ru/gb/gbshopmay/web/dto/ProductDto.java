@@ -1,7 +1,7 @@
 package ru.gb.gbshopmay.web.dto;
 
 import lombok.*;
-import ru.gb.gbrestmart.entity.enums.Status;
+import ru.gb.gbshopmay.entity.enums.Status;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
