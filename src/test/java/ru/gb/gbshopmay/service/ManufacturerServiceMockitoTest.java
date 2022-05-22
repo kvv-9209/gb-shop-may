@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 import ru.gb.gbshopmay.dao.ManufacturerDao;
 import ru.gb.gbshopmay.entity.Manufacturer;
 import ru.gb.gbshopmay.web.dto.ManufacturerDto;
@@ -81,4 +83,13 @@ class ManufacturerServiceMockitoTest {
     }
 
     // todo дз сделать методы проверки удаления и сохранения
+
+
+    public static class ToManufacturerDto implements Answer<ManufacturerDto> {
+
+        @Override
+        public ManufacturerDto answer(InvocationOnMock invocation) throws Throwable {
+            return null;
+        }
+    }
 }
