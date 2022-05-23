@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ru.gb.gbshopmay.entity.Manufacturer;
 import ru.gb.gbshopmay.service.ManufacturerService;
 import ru.gb.gbshopmay.web.dto.ManufacturerDto;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -81,15 +83,50 @@ class ManufacturerRestControllerMockitoTest {
 
     @Test
     void handlePostTest() throws Exception {
+        given(manufacturerService.save(any())).will(
+                (invocation) -> {
+                    ManufacturerDto manufacturerDto = invocation.getArgument(0);
 
-        mockMvc.perform(get("/api/v1/manufacturer")
+                    if (manufacturerDto == null) {
+                        return null;
+                    }
+
+                    return ManufacturerDto.builder()
+                            .id(manufacturerDto.getId())
+                            .name(manufacturerDto.getName())
+                            .build();
+                });
+
+        mockMvc.perform(post("/api/v1/manufacturer/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": \"1\", \"name\": \"test\"}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
     void deleteByIdTest() throws Exception {
+
+        mockMvc.perform(delete("/api/v1/manufacturer/{manufacturerId}", 1))
+                .andExpect(status().isNoContent());
+
+        given(manufacturerService.save(any())).will(
+                (invocation) -> {
+                    ManufacturerDto manufacturerDto = invocation.getArgument(0);
+
+                    if (manufacturerDto == null) {
+                        return null;
+                    }
+
+                    return ManufacturerDto.builder()
+                            .id(manufacturerDto.getId())
+                            .name(manufacturerDto.getName())
+                            .build();
+                });
+
+        mockMvc.perform(post("/api/v1/manufacturer/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": \"1\", \"name\": \"test\"}"))
+                .andExpect(status().isCreated());
 
         mockMvc.perform(delete("/api/v1/manufacturer/{manufacturerId}", 1))
                 .andExpect(status().isNoContent());
