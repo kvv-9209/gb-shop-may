@@ -6,8 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.gb.gbshopmay.service.ManufacturerService;
 import ru.gb.gbshopmay.web.dto.ManufacturerDto;
@@ -17,9 +18,10 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,11 +83,52 @@ class ManufacturerRestControllerMockitoTest {
 
     // todo дз сделать методы проверки удаления и сохранения обычными unit тестами и mockmvc тестами (4 теста)
     @Test
-    void дляДомашкиНаСохранение() throws Exception {
+    void manufacturerSaveTest() throws Exception {
+        // given
+                ManufacturerDto manufacturer = ManufacturerDto.builder()
+                .id(1L)
+                .name(APPLE_COMPANY_NAME)
+                .build();
+        given(manufacturerService.save(manufacturer)).willReturn(manufacturer);
 
-//        mockMvc.perform(get("/api/v1/manufacturer")//post
-//                        .contentType()
-//                        .content("{сюда подставить json экранировать вот так \"}"))
+        // when
+        ManufacturerDto returnedManufacturerDto = manufacturerService.save(manufacturer);
 
+        // then
+        then(manufacturerService).should().save(any());
+        assertAll(
+                () -> assertEquals(1L, returnedManufacturerDto.getId()),
+                () -> assertEquals(APPLE_COMPANY_NAME, returnedManufacturerDto.getName())
+        );
+
+    }
+
+    @Test
+    void manufacturerDeleteTest() throws Exception {
+
+        // when
+        manufacturerService.deleteById(1L);
+        // then
+ //       then().should().deleteById(1L);
+    }
+
+    @Test
+    public void deleteByIdManufacturerMockMvcTest() throws Exception {
+
+        mockMvc.perform(delete("/api/v1/manufacturer/{manufacturerId}", 1))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/api/v1/manufacturer/{manufacturerId}", 1))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void postManufacturerSaveMockMvcTest() throws Exception {
+        given(manufacturerService.save(any())).willReturn(manufacturers.get(0));
+
+        mockMvc.perform(post("/api/v1/manufacturer")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"${APPLE_COMPANY_NAME}\"}"))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 }

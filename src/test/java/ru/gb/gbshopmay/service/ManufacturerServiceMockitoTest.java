@@ -5,12 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 import ru.gb.gbshopmay.dao.ManufacturerDao;
 import ru.gb.gbshopmay.entity.Manufacturer;
 import ru.gb.gbshopmay.web.dto.ManufacturerDto;
 import ru.gb.gbshopmay.web.dto.mapper.ManufacturerMapper;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,9 @@ class ManufacturerServiceMockitoTest {
 
     @Mock
     ManufacturerMapper manufacturerMapper;
+
+    @Mock
+    ManufacturerDto manufacturerDto;
 
     @InjectMocks
     ManufacturerService manufacturerService;
@@ -80,5 +86,70 @@ class ManufacturerServiceMockitoTest {
         );
     }
 
-    // todo дз сделать методы проверки удаления и сохранения
+    @Test
+    void deleteTest() {
+
+        // when
+        manufacturerService.deleteById(1L);
+        // then
+        then(manufacturerDao).should().deleteById(1L);
+}
+
+    @Test
+    void saveTest() throws Exception {
+        // given
+        Manufacturer manufacturer = Manufacturer.builder()
+                .id(1L)
+                .name(APPLE_COMPANY_NAME)
+                .build();
+        given(manufacturerDao.save(any(Manufacturer.class))).willReturn(manufacturer);
+        given(manufacturerMapper.toManufacturer(any())).will(new ToManufacturer());
+        given(manufacturerMapper.toManufacturerDto(any())).will(new ToManufacturerDto());
+
+        // when
+        ManufacturerDto returnManufacturerDto = manufacturerService.save(manufacturerDto);
+
+        // then
+        then(manufacturerDao).should().save(any(Manufacturer.class));
+
+        assertAll(
+                () -> assertEquals(1L, returnManufacturerDto.getId()),
+                () -> assertEquals(APPLE_COMPANY_NAME, returnManufacturerDto.getName())
+        );
+    }
+
+    static class ToManufacturer implements Answer<Manufacturer> {
+
+        @Override
+        public Manufacturer answer(InvocationOnMock invocation) throws Throwable {
+            ManufacturerDto manufacturerDto = (ManufacturerDto) invocation.getArgument(0);
+
+            if (manufacturerDto == null) {
+                return null;
+            }
+
+            return Manufacturer.builder()
+                    .id(manufacturerDto.getId())
+                    .name(manufacturerDto.getName())
+                    .build();
+        }
+    }
+
+    static class ToManufacturerDto implements Answer<ManufacturerDto> {
+
+        @Override
+        public ManufacturerDto answer(InvocationOnMock invocation) throws Throwable {
+
+            Manufacturer manufacturer = (Manufacturer) invocation.getArgument(0);
+
+            if (manufacturer == null) {
+                return null;
+            }
+
+            return ManufacturerDto.builder()
+                    .id(manufacturer.getId())
+                    .name(manufacturer.getName())
+                    .build();
+        }
+    }
 }
