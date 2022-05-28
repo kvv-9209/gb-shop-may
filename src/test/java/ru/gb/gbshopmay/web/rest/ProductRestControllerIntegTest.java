@@ -1,18 +1,15 @@
 package ru.gb.gbshopmay.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
+import ru.gb.gbapimay.product.dto.ProductDto;
 import ru.gb.gbshopmay.dao.ProductDao;
-import ru.gb.gbshopmay.web.dto.ProductDto;
 
 import java.util.List;
 
@@ -25,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Disabled
 class ProductRestControllerIntegTest {
 
     @Autowired
@@ -67,7 +65,7 @@ class ProductRestControllerIntegTest {
 
     @Test
     @Order(3)
-    public void deletTest() throws Exception {
+    public void deleteTest() throws Exception {
 
         mockMvc.perform(delete("/api/v1/product"))
                 .andExpect(status().isNoContent());

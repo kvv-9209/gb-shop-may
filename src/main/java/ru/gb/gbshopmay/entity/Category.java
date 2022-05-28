@@ -28,8 +28,8 @@ public class Category {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.MERGE)
-    private Set<Product> products;
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.MERGE)
+//    private Set<Product> products;
 
 
     @Version
@@ -54,7 +54,6 @@ public class Category {
         return "Category{" +
                 "id=" + id +
                 ", name='" + title + '\'' +
-                ", products=" + products +
                 '}';
     }
 }
