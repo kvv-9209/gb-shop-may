@@ -3,9 +3,6 @@ package ru.gb.gbapimay.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Artem Kropotov
@@ -23,6 +20,8 @@ public class GbApiProperties {
     @Setter
     public static class Endpoint {
         private String manufacturerUrl;
+        private String categoryUrl;
+        private String productUrl;
     }
 
     @Getter
