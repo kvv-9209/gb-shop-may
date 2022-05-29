@@ -28,7 +28,6 @@ public class FeignClientFactory {
     private final ObjectProvider<HttpMessageConverterCustomizer> customizers;
     private final GbApiProperties gbApiProperties;
 
-    @Bean
     public <T> T newFeignGateway(Class<T> requiredType, String url) {
         return Feign.builder()
                 .encoder(new SpringEncoder(messageConverters))
