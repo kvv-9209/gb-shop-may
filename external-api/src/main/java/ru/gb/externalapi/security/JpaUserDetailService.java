@@ -2,8 +2,6 @@ package ru.gb.externalapi.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,13 +31,13 @@ public class JpaUserDetailService implements UserDetailsService, UserService {
     private final AccountRoleDao accountRoleDao;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private UserService userService;
+//    private UserService userService;
 
-    @Autowired
-    @Lazy
-    public void setUserService(JpaUserDetailService jpaUserDetailService) {
-        this.userService = jpaUserDetailService;
-    }
+//    @Autowired
+//    @Lazy
+//    public void setUserService(JpaUserDetailService jpaUserDetailService) {
+//        this.userService = jpaUserDetailService;
+//    }
 
     @Override
     @Transactional
@@ -83,7 +81,14 @@ public class JpaUserDetailService implements UserDetailsService, UserService {
         return userMapper.toUserDto(accountUserDao.save(user));
     }
 
-    @Transactional
+    @Override
+    public AccountUser findByUsername(String username) {
+        return accountUserDao.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("Username: " + username + " not found")
+        );
+    }
+
+    //    @Transactional
     public AccountUser update(AccountUser accountUser) {
         if (accountUser.getId() != null) {
             accountUserDao.findById(accountUser.getId()).ifPresent(
@@ -116,7 +121,7 @@ public class JpaUserDetailService implements UserDetailsService, UserService {
                 )
         );
         disable(accountUser);
-        userService.update(accountUser);
+        update(accountUser);
     }
 
     private void enable(final AccountUser accountUser) {

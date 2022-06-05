@@ -13,7 +13,8 @@ public interface UserService {
 
     UserDto register(UserDto userDto);
     UserDto update(UserDto userDto);
-    AccountUser update(AccountUser userDto);
+    AccountUser findByUsername(String username);
+//    AccountUser update(AccountUser userDto);
     UserDto findById(Long id);
     List<UserDto> findAll();
     void deleteById(Long id);
