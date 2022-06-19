@@ -12,5 +12,6 @@ spring:
       password: ${SPRING_CLOUD_CONFIG_PASSWORD:geek_pass}
 
 
+
 # /{label}/{application}-{profile}.yml
 # /{application}/{profile}/{label}
