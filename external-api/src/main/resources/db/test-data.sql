@@ -16,4 +16,6 @@ values (1, 1),
        (2, 2);
 
 
-select * from account_user;
+select * from account_user where username = 'admin';
+
+select * from manufacturer;

@@ -51,7 +51,7 @@ class ProductRestControllerIntegTest {
     ObjectMapper objectMapper;
 
     public static final String APPLE_COMPANY_NAME = "Apple";
-    public static final String ELECTRONIC_CATEGORY_NAME = "Apple";
+    public static final String ELECTRONIC_CATEGORY_NAME = "Electronic";
 
     @Test
     @Order(1)

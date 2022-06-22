@@ -1,14 +1,12 @@
 package ru.gb.gbshopmay.entity;
 
-import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ru.gb.gbapimay.common.enums.Status;
 import ru.gb.gbshopmay.entity.common.InfoEntity;
-import ru.gb.gbshopmay.entity.enums.Status;
-
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -42,7 +40,7 @@ public class Product extends InfoEntity {
     @JoinTable(name = "product_category",
     joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> carts;
+    private Set<Category> categories;
 
     @Override
     public String toString() {
@@ -58,13 +56,13 @@ public class Product extends InfoEntity {
     @Builder
     public Product(Long id, int version, String createdBy, LocalDateTime createdDate, String lastModifiedBy,
                    LocalDateTime lastModifiedDate, String title, BigDecimal cost, LocalDate manufactureDate,
-                   Manufacturer manufacturer, Status status, Set<Category> carts) {
+                   Manufacturer manufacturer, Status status, Set<Category> categories) {
         super(id, version, createdBy, createdDate, lastModifiedBy, lastModifiedDate);
         this.title = title;
         this.cost = cost;
         this.manufactureDate = manufactureDate;
         this.manufacturer = manufacturer;
         this.status = status;
-        this.carts = carts;
+        this.categories = categories;
     }
 }
