@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "AUTHORITY")
 public class Authority implements GrantedAuthority {
 
-    static final long serialVersionUID = -5151435165072034245L;
+    static final long serialVersionUID = 7117023478748906834L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

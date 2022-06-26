@@ -21,9 +21,11 @@
 <div th:replace="~{common/navbar :: navi(Cart)}"></div>
 
 <div class="container">
+    <br>
+    <h1>Заказ</h1>
     <span th:if="${cart.items.size() == 0}">Корзина пуста</span>
     <div th:unless="${cart.items.size() == 0}">
-<!--        <span th:text="${cart.items.size()}"></span>-->
+        <!--        <span th:text="${cart.items.size()}"></span>-->
         <table class="table">
             <thead>
             <tr>
@@ -63,9 +65,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="authWarningModalLabel">Предупреждение</h5>
-<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
+                <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                <!--                    <span aria-hidden="true">&times;</span>-->
+                <!--                </button>-->
             </div>
             <div class="modal-body">
                 <span>Для формирования заказа вам необходимо зайти в свою учетную запись</span>
