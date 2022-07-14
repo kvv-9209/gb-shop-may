@@ -8,13 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.gb.gbapimay.product.dto.ProductDto;
-import ru.gb.gbshopmay.service.CategoryService;
-import ru.gb.gbshopmay.service.ManufacturerService;
-import ru.gb.gbshopmay.service.ProductImageService;
-import ru.gb.gbshopmay.service.ProductService;
+import ru.gb.gbshopmay.service.*;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
+import java.security.Principal;
 import java.time.LocalDate;
 
 @Controller
@@ -26,6 +25,7 @@ public class ProductController {
     private final ProductImageService productImageService;
     private final CategoryService categoryService;
     private final ManufacturerService manufacturerService;
+    private final UserService userService;
 
 
     @GetMapping("/all")
@@ -90,4 +90,21 @@ public class ProductController {
     }
 
     //  todo дз 11      Сделать загрузку множества изображений
+
+//    ReviewDto {
+//        String productId;
+//        String comment;
+//        String captchaCode;
+//    }
+//
+    // в маппере наййти productById из БД
+
+
+    // сделать вывод сообщения об ошибке и валидацию капчи через BindingResult
+//    @PostMapping("/review")
+//    public String addReview(ReviewDto reviewDto, HttpSession httpSession, Principal principal) {
+//        userService.findByUsername(principal.getName());
+//
+//        reviewService.save(ReviewDto)
+//    }
 }
